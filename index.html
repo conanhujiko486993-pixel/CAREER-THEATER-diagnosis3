@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【28卒】明日11/21開催！CAREER THEATER 緊急参加度＆必聴タイムテーブル診断</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans JP', sans-serif; }
+    .fade-in { animation: fadeIn 0.35s ease-out forwards; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-800 min-h-screen flex flex-col justify-between selection:bg-amber-300">
+
+  <!-- ヘッダー -->
+  <header class="bg-gradient-to-r from-indigo-900 via-blue-900 to-slate-900 text-white py-3 px-4 border-b border-indigo-500/30 sticky top-0 z-10 shadow-md">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <span class="text-xs font-bold tracking-wider bg-amber-500 text-slate-950 px-2 py-0.5 rounded">en-courage 28卒限定</span>
+      <span class="text-xs text-amber-300 font-bold animate-pulse">🔥 明日 11/21(土) 12:00〜開催！</span>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main class="flex-grow flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
+      
+      <!-- 1. スタート画面 -->
+      <div id="start-screen" class="p-6 text-center fade-in">
+        <div class="inline-block bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full mb-3 border border-indigo-200">
+          所要時間 30秒 ｜ 全6問
+        </div>
+        <h1 class="text-2xl font-black text-slate-900 leading-snug mb-3">
+          年内の就活、このままで大丈夫？<br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+            『CAREER THEATER』<br>必聴タイムテーブル診断
+          </span>
+        </h1>
+        <p class="text-sm text-slate-600 mb-6 leading-relaxed">
+          JR西日本・バンダイ・森ビル・レバレジーズ・アビーム・ADKなど人気企業＆役員クラスが集結する<strong class="text-slate-900">明日11/21(土)開催</strong>の特別イベント。<br>
+          今のあなたに刺さる<strong class="text-indigo-700">「絶対に聞くべき15分」</strong>を診断します！
+        </p>
+
+        <div class="bg-slate-50 rounded-xl p-4 mb-6 text-left border border-slate-200 space-y-2 text-xs text-slate-700">
+          <div class="flex items-center gap-2">
+            <span class="text-base">🎁</span>
+            <span>元外資＆リクルート人事監修資料＋アマギフ最大5,000円</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-base">🎧</span>
+            <span>1講演15分・途中入退室OK！忙しい人でも耳だけ1ターム参加歓迎</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-base">👑</span>
+            <span>代表取締役社長・上場企業CFO・執行役員クラスが直接登壇</span>
+          </div>
+        </div>
+
+        <button onclick="startQuiz()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black py-4 px-6 rounded-xl shadow-lg transform transition active:scale-95 text-base">
+          診断をスタートする（無料） ▶
+        </button>
+      </div>
+
+      <!-- 2. 質問画面 -->
+      <div id="quiz-screen" class="hidden p-6">
+        <div class="flex justify-between items-center text-xs font-bold text-slate-400 mb-2">
+          <span id="question-number">QUESTION 1 / 6</span>
+          <span id="progress-percent">16%</span>
+        </div>
+        <div class="w-full bg-slate-100 h-2 rounded-full mb-6 overflow-hidden">
+          <div id="progress-bar" class="bg-gradient-to-r from-blue-600 to-indigo-600 h-full transition-all duration-300" style="width: 16%"></div>
+        </div>
+
+        <h2 id="question-text" class="text-lg font-black text-slate-900 mb-6 leading-snug min-h-[3.5rem]">
+          質問文
+        </h2>
+
+        <div id="options-container" class="space-y-3"></div>
+      </div>
+
+      <!-- 3. 結果画面 -->
+      <div id="result-screen" class="hidden fade-in">
+        <div class="bg-gradient-to-br from-indigo-900 to-blue-800 text-white p-5 text-center">
+          <p class="text-xs font-bold text-amber-300 tracking-wider mb-2">あなたの診断結果</p>
+          <div id="result-badge" class="inline-block bg-white/10 backdrop-blur-sm border border-white/20 text-xs font-bold px-4 py-1.5 rounded-2xl mb-3 leading-relaxed whitespace-pre-line">
+            必須参加レベル：★★★★★
+          </div>
+          <h2 id="result-title" class="text-lg sm:text-xl font-black leading-snug mb-2.5 whitespace-pre-line tracking-tight">
+            タイプ名
+          </h2>
+          <p id="result-subtitle" class="text-xs text-blue-100 leading-relaxed">
+            サブタイトル
+          </p>
+        </div>
+
+        <div class="p-6 space-y-5">
+          <!-- 現状の課題と必要性 -->
+          <div>
+            <h3 class="text-xs font-black text-indigo-600 uppercase tracking-wider mb-1">💡 今のあなたに『CAREER THEATER』が必要な理由</h3>
+            <p id="result-desc" class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200">
+              解説文
+            </p>
+          </div>
+
+          <!-- ピンポイントおすすめ講演 -->
+          <div>
+            <h3 class="text-xs font-black text-rose-600 uppercase tracking-wider mb-2">⏰ 明日11/21(土) あなた専用の必聴ターム</h3>
+            <div id="result-sessions" class="space-y-2.5"></div>
+          </div>
+
+          <!-- 全タイムテーブル確認（開閉式） -->
+          <div class="border border-slate-200 rounded-xl overflow-hidden">
+            <button onclick="toggleFullTimetable()" class="w-full bg-slate-100 hover:bg-slate-200/70 px-4 py-3 text-left flex justify-between items-center text-xs font-black text-slate-700 transition">
+              <span>📅 12:00〜18:55 全16ターム一覧を見る</span>
+              <span id="timetable-arrow">▼</span>
+            </button>
+            <div id="full-timetable" class="hidden p-3 bg-white max-h-64 overflow-y-auto space-y-2 text-xs border-t border-slate-200"></div>
+          </div>
+
+          <!-- おすすめの歩き方 -->
+          <div>
+            <h3 class="text-xs font-black text-amber-600 uppercase tracking-wider mb-2">🎯 明日の立ち回り攻略ポイント</h3>
+            <ul id="result-points" class="space-y-2 text-sm text-slate-800 font-medium"></ul>
+          </div>
+
+          <!-- CTAエリア -->
+          <div class="bg-amber-50 border-2 border-amber-400 rounded-xl p-4 text-center space-y-3">
+            <p class="text-xs font-black text-amber-900">
+              ⚠️ 明日 11/21(土) 12:00スタート・最終締切！<br>
+              <span class="font-normal text-amber-800">エントリー後、LINEオープンチャット入室で参加完了！</span>
+            </p>
+            <a href="https://app.en-courage.com/events/01M2EMGQ5A2XQV89ABM6Q8PEP6" target="_blank" rel="noopener noreferrer"
+               class="block w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-black py-3.5 px-4 rounded-xl shadow-md transform transition active:scale-95 text-sm">
+              今すぐイベント詳細・エントリーへ ↗
+            </a>
+            <p class="text-[11px] text-slate-500">
+              ※途中入退室OK！移動中や休憩中の「15分・耳だけ参加」でもOK！
+            </p>
+          </div>
+
+          <!-- シェア＆やり直しボタン -->
+          <div class="flex gap-2 pt-2">
+            <button onclick="copyResult()" id="copy-btn" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold py-3 px-4 rounded-lg transition">
+              📋 結果をコピーしてメンターに報告
+            </button>
+            <button onclick="resetQuiz()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold py-3 px-4 rounded-lg transition">
+              やり直す
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer class="text-center py-4 text-slate-500 text-xs">
+    <p>en-courage 28卒向けイベント参加サポート診断</p>
+  </footer>
+
+  <script>
+    // 全16タームの公式タイムテーブルデータ
+    const allTimetable = [
+      { time: "12:00-12:40", company: "レバレジーズ", theme: "東大→大手コンサル経験者が語るAI時代のキャリア戦略 〜不確実性の高い時代で真の安定を勝ち取るために必要なこと〜" },
+      { time: "12:50-13:05", company: "アビームコンサルティング株式会社", theme: "Coming Soon..." },
+      { time: "13:15-13:30", company: "株式会社トライグループ", theme: "Coming Soon..." },
+      { time: "13:40-13:55", company: "エイチ・オー・アイ・コンサルティング株式会社", theme: "AIが答えられないものに、価値がある。〜AI時代の仕事の選び方〜" },
+      { time: "14:05-14:20", company: "株式会社バンダイ", theme: "バンダイ流・キャリアと子育て" },
+      { time: "14:30-14:45", company: "株式会社オープンハウス・アーキテクト", theme: "20代で「守りに入る」キャリアを選ぶな 〜常識破りな環境でしか手に入らない本物の市場価値〜" },
+      { time: "14:55-15:10", company: "株式会社データX", theme: "Coming Soon..." },
+      { time: "15:20-15:35", company: "JR西日本", theme: "“レールの先へ 〜共創と挑戦で未来を切り拓け〜”" },
+      { time: "15:45-16:00", company: "ジェイフロンティア株式会社", theme: "道を選ぶより、選んだ道を正解にしろ。〜上場企業CFOが約20年かけて辿り着いた、会社の選び方と、その先の歩み方〜" },
+      { time: "16:10-16:25", company: "株式会社トライグループ", theme: "Coming Soon..." },
+      { time: "16:35-16:50", company: "森ビル株式会社", theme: "地図を書き換える前に、常識を書き換えろ —クレイジーと言われた創業者たち" },
+      { time: "17:00-17:15", company: "パーソルキャリア", theme: "終身雇用が崩壊する中、複線的キャリアで社内出世より社会出世を目指す私が大事にしている3つのポイント" },
+      { time: "17:25-17:40", company: "山田コンサルティンググループ株式会社", theme: "「とりあえずコンサル」時代の終焉。人生100年時代におけるキャリアの考え方とその選択の本質をマクロ環境の大きな変化からひも解く。" },
+      { time: "17:50-18:05", company: "株式会社ADKホールディングス", theme: "会社のビジョンを知って、自分を知る - ADKのビジョン「ファングロースパートナー」とは？" },
+      { time: "18:15-18:30", company: "株式会社デジタルアイデンティティ", theme: "Coming Soon..." },
+      { time: "18:40-18:55", company: "株式会社シーユーシー", theme: "就職活動でも、自分らしさを活かす選択を。――「どうありたいか」から考える『自分らしい会社選び』" }
+    ];
+
+    // 質問データ（6問）
+    const questions = [
+      {
+        q: "Q1. 正直、今の自分の「会社選びの基準」や「キャリア観」で一番モヤッとしているのは？",
+        options: [
+          { text: "AI時代・終身雇用崩壊の中で「本当に価値あるキャリア」が何か分からない", type: "ai_career" },
+          { text: "安定志向で無難に選ぶべきか、若いうちから挑戦できる環境に行くべきか迷う", type: "challenge" },
+          { text: "「自分らしさ」や「将来の働き方・ライフイベント」まで納得できる軸が欲しい", type: "vision" },
+          { text: "就活を始めたばかり、または効率よく情報収集して一気に進めたい", type: "smart" }
+        ]
+      },
+      {
+        q: "Q2. これから本格化する本選考に向けて、一番知りたい・武器にしたいことは？",
+        options: [
+          { text: "「とりあえずコンサル・大手」に流されない本質的なキャリア戦略", type: "ai_career" },
+          { text: "代表取締役社長・上場企業CFO・大手インフラが語る「挑戦と意思決定の軸」", type: "challenge" },
+          { text: "企業のビジョンと自分の価値観を結びつけて、説得力ある志望動機を作ること", type: "vision" },
+          { text: "GDや面接の対策資料・実践ノウハウを最短ルートで手に入れたい", type: "smart" }
+        ]
+      },
+      {
+        q: "Q3. 次の講演テーマのうち、一番「今すぐ聞きたい！」と思うものはどれ？",
+        options: [
+          { text: "『東大→大手コンサル経験者が語るAI時代のキャリア戦略』", type: "ai_career" },
+          { text: "『20代で「守りに入る」キャリアを選ぶな 〜本物の市場価値〜』", type: "challenge" },
+          { text: "『バンダイ流・キャリアと子育て』／『「どうありたいか」から考える会社選び』", type: "vision" },
+          { text: "『“レールの先へ 〜共創と挑戦で未来を切り拓け〜”（JR西日本）』", type: "smart" }
+        ]
+      },
+      {
+        q: "Q4. 普段の企業説明会や就活イベントに参加していて感じることは？",
+        options: [
+          { text: "1社ずつ説明会に行くのは時間がかかりすぎてタイパが悪い", type: "smart" },
+          { text: "キレイゴトの企業紹介が多くて、常識を覆すような熱い話が聞けない", type: "challenge" },
+          { text: "マクロ環境の変化や「これからの時代に求められる人材像」の視点が足りない", type: "ai_career" },
+          { text: "企業のビジョンやリアルな働き方を知った上で、自己分析を深めたい", type: "vision" }
+        ]
+      },
+      {
+        q: "Q5. 明日11月21日(土)のスケジュールはどんな感じ？",
+        options: [
+          { text: "一日中予定が詰まっていて厳しい…（移動中や休憩の5〜15分が限界かも）", type: "smart" },
+          { text: "バイトや予定の合間の「15分だけ」なら耳だけで聞けそう！", type: "smart" },
+          { text: "午後〜夕方にかけて時間を空けて、就活の軸を固める日にしたい", type: "challenge" },
+          { text: "12:00のオープニングから、あるいは気になる時間帯をまとめて参加できそう！", type: "ai_career" }
+        ]
+      },
+      {
+        q: "Q6. ぶっちゃけ、明日の参加モチベーションが爆上がりするポイントは？",
+        options: [
+          { text: "元外資＆リクルート人事監修の「GD・面接対策資料集」がもらえること", type: "smart" },
+          { text: "カメラON＆当日アンケート回答で「アマギフ最大5,000円分」が狙えること", type: "ai_career" },
+          { text: "JR西日本・バンダイ・森ビル・アビーム等のキーマンが一気に登壇すること", type: "challenge" },
+          { text: "就活プロ講師の『プレミアムターム』で納得内定メソッドが聞けること", type: "vision" }
+        ]
+      }
+    ];
+
+    // 結果パターンデータ（スマホ改行最適化：バッジ2行・タイトル3行）
+    const results = {
+      ai_career: {
+        badge: "緊急参加度：★★★★★\n（AI時代・市場価値覚醒枠）",
+        title: "【「とりあえず」からの脱却】\nAI時代のキャリア戦略・視座向上\nタイプ",
+        subtitle: "12:00オープニング（レバレジーズ40分枠）や15分ピンポイント参戦がおすすめ！",
+        desc: "AIの進化や終身雇用の崩壊で「何が安定か」が激変している今、「とりあえず大手・コンサル」と周囲に流されるのが一番危険！明日は12:00のレバレジーズ40分特別講演や、15分完結のコンサル社長・採用責任者の講演で『これからの時代のキャリア選択の本質』が凝縮して聞けます。",
+        sessions: [
+          {
+            time: "12:00 - 12:40（40分特別枠！）",
+            company: "レバレジーズ（キャリア支援責任者 田中 裕二様）",
+            theme: "『東大→大手コンサル経験者が語るAI時代のキャリア戦略 〜不確実性の高い時代で真の安定を勝ち取るために必要なこと〜』"
+          },
+          {
+            time: "13:40 - 13:55 / 17:25 - 17:40（各15分！）",
+            company: "エイチ・オー・アイ・コンサルティング（代表取締役社長 堤 寛夫様）／ 山田コンサルティンググループ",
+            theme: "『AIが答えられないものに、価値がある。〜AI時代の仕事の選び方〜』＆『「とりあえずコンサル」時代の終焉。』"
+          }
+        ],
+        points: [
+          "✅ 時間が取れるなら12:00〜、忙しいなら13:40〜か17:25〜の「15分だけ」でも劇的に視座が変わる！",
+          "✅ 面接官に「視座が高い！」と思わせるキャリア観がそのまま手に入る",
+          "✅ 特典の『元外資＆リクルート人事監修資料』も必ずゲットしよう"
+        ]
+      },
+      challenge: {
+        badge: "緊急参加度：★★★★★\n（挑戦軸・トップ視座インストール枠）",
+        title: "【20代で守りに入るな】\n挑戦・意思決定軸ブレイクスルー\nタイプ",
+        subtitle: "1講演たった15分！トップ企業の熱量に触れて就活軸を固めよう",
+        desc: "「失敗しない無難な選択」を探して迷子になっていませんか？明日の午後14:30〜16:50は、常識破りの挑戦を続けるトップ企業・経営陣が連続登壇するゴールデンタイム！1講演15分完結なので、予定の合間に1ターム耳だけで聞くだけでも視座が劇的に引き上がります。",
+        sessions: [
+          {
+            time: "14:30 - 14:45 / 15:20 - 15:35（各15分！）",
+            company: "オープンハウス・アーキテクト ／ JR西日本（担当部長 足立 大士様）",
+            theme: "『20代で「守りに入る」キャリアを選ぶな』＆『“レールの先へ 〜共創と挑戦で未来を切り拓け〜”』"
+          },
+          {
+            time: "15:45 - 16:00 / 16:35 - 16:50（各15分！）",
+            company: "ジェイフロンティア（取締役執行役員CFO 樋口 雄也様）／ 森ビル（採用リーダー 毛利 一穂様）",
+            theme: "『道を選ぶより、選んだ道を正解にしろ。』＆『地図を書き換える前に、常識を書き換えろ』"
+          }
+        ],
+        points: [
+          "✅ 14:30〜16:50の間で、空いている15分を1つ選ぶだけでも大収穫！",
+          "✅ 上場企業CFOや大手インフラの視座に触れれば、ガクチカ・志望動機の深みが激変",
+          "✅ 就活プロ講師の『プレミアムターム』も合わせて聞けば鬼に金棒！"
+        ]
+      },
+      vision: {
+        badge: "緊急参加度：★★★★★\n（自己分析・働き方・志望動機完成枠）",
+        title: "【「どうありたいか」を言語化】\nビジョン共鳴・自分らしい就活\nタイプ",
+        subtitle: "バンダイ・パーソル・ADK・シーユーシーの15分講演で軸を完成させよう！",
+        desc: "「自分に合った会社が分からない」「働き方や将来のライフプランも含めて納得したい」というあなたにドンピシャの回が勢揃い！1講演15分なので、移動中や休憩時間の耳だけ参加でも、自己分析が一気に深まるヒントを持ち帰れます。",
+        sessions: [
+          {
+            time: "14:05 - 14:20 / 17:00 - 17:15（各15分！）",
+            company: "株式会社バンダイ（人事部マネージャー 藤岡 彩加様）／ パーソルキャリア",
+            theme: "『バンダイ流・キャリアと子育て』＆『複線的キャリアで社内出世より社会出世を目指す3つのポイント』"
+          },
+          {
+            time: "17:50 - 18:05 / 18:40 - 18:55（各15分！）",
+            company: "株式会社ADKホールディングス ／ 株式会社シーユーシー（執行役員 鎌苅 亮介様）",
+            theme: "『会社のビジョンを知って、自分を知る』＆『「どうありたいか」から考える自分らしい会社選び』"
+          }
+        ],
+        points: [
+          "✅ 14:05〜のバンダイや17:00以降の夕方15分枠はスキマ時間にも最適！",
+          "✅ 企業のビジョンから逆算することで、言葉に詰まっていた自己PRがスラスラ書ける",
+          "✅ 終わったら当日アンケートに答えて豪華特典までフル回収しよう"
+        ]
+      },
+      smart: {
+        badge: "緊急参加度：MAX ★★★★★\n（タイパ最強・15分ピンポイント参戦枠）",
+        title: "【15分だけの耳だけ参加×豪華特典】\n超効率・スキマ時間攻略\nタイプ",
+        subtitle: "忙しくても大丈夫！1講演15分・途中入退室自由だから1タームだけ潜り込もう",
+        desc: "「明日は予定が詰まっている」「バイトや用事の合間しかない」という人にこそ、CAREER THEATERの『1講演15分・途中入退室自由・耳だけOK』の仕組みが最強です！12:00〜18:55の間で、休憩や移動の15分だけZoomを繋いでトップ社会人のエッセンス＆豪華特典を賢く回収しましょう！",
+        sessions: [
+          {
+            time: "12:50-13:05 / 14:55-15:10 / 18:15-18:30（各15分！）",
+            company: "アビームコンサルティング ／ データX ／ デジタルアイデンティティ ／ トライグループ",
+            theme: "『Coming Soon...（当日解禁のシークレット特別講演！）』"
+          },
+          {
+            time: "12:00 - 18:55（1講演15分・途中入退室OK）",
+            company: "JR西日本・バンダイ・森ビル・レバレジーズ・ADKほか全16講演",
+            theme: "『移動中や休憩の「15分・耳だけ参加」で1社だけでもインプット！』"
+          }
+        ],
+        points: [
+          "✅ まずはエントリーしてLINEオプチャに入り、当日空いた「15分だけ」Zoomへ！",
+          "✅ たった15分・1ターム聞くだけでも、就活の視座とモチベが確実に上がる",
+          "✅ 元外資＆リクルート・現ベンチャー人事監修のGD・面接資料集も確保しよう！"
+        ]
+      }
+    };
+
+    let currentQuestion = 0;
+    let scores = { ai_career: 0, challenge: 0, vision: 0, smart: 0 };
+    let finalResultType = "";
+
+    function startQuiz() {
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById('question-number').innerText = `QUESTION ${currentQuestion + 1} / ${questions.length}`;
+      const percent = Math.round(((currentQuestion + 1) / questions.length) * 100);
+      document.getElementById('progress-percent').innerText = `${percent}%`;
+      document.getElementById('progress-bar').style.width = `${percent}%`;
+      
+      const qText = document.getElementById('question-text');
+      qText.innerText = q.q;
+      qText.classList.remove('fade-in');
+      void qText.offsetWidth;
+      qText.classList.add('fade-in');
+
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      q.options.forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-4 rounded-xl border-2 border-slate-200 hover:border-blue-600 hover:bg-blue-50/50 transition font-bold text-sm text-slate-700 active:scale-[0.98] fade-in";
+        btn.innerText = opt.text;
+        btn.onclick = () => selectOption(opt.type);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(type) {
+      scores[type]++;
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.remove('hidden');
+
+      finalResultType = Object.keys(scores).reduce((a, b) => scores[a] >= scores[b] ? a : b);
+      const res = results[finalResultType];
+
+      document.getElementById('result-badge').innerText = res.badge;
+      document.getElementById('result-title').innerText = res.title;
+      document.getElementById('result-subtitle').innerText = res.subtitle;
+      document.getElementById('result-desc').innerText = res.desc;
+
+      // おすすめ講演の描画
+      const sessionsContainer = document.getElementById('result-sessions');
+      sessionsContainer.innerHTML = '';
+      res.sessions.forEach(sec => {
+        const card = document.createElement('div');
+        card.className = "bg-rose-50/70 border border-rose-200 rounded-xl p-3 text-left";
+        card.innerHTML = `
+          <div class="inline-block bg-rose-600 text-white text-[11px] font-black px-2 py-0.5 rounded mb-1">
+            🕒 ${sec.time}
+          </div>
+          <p class="text-xs font-black text-slate-900 mb-0.5">${sec.company}</p>
+          <p class="text-xs text-slate-700 leading-snug">${sec.theme}</p>
+        `;
+        sessionsContainer.appendChild(card);
+      });
+
+      // 全タイムテーブルの生成
+      const fullTtContainer = document.getElementById('full-timetable');
+      fullTtContainer.innerHTML = '';
+      allTimetable.forEach(item => {
+        const row = document.createElement('div');
+        row.className = "border-b border-slate-100 pb-2 last:border-b-0";
+        row.innerHTML = `
+          <span class="font-black text-indigo-700">${item.time}</span>
+          <span class="font-bold text-slate-900 ml-1">${item.company}</span>
+          <p class="text-[11px] text-slate-600 mt-0.5">${item.theme}</p>
+        `;
+        fullTtContainer.appendChild(row);
+      });
+
+      // 攻略ポイントの描画
+      const pointsUl = document.getElementById('result-points');
+      pointsUl.innerHTML = '';
+      res.points.forEach(pt => {
+        const li = document.createElement('li');
+        li.className = "bg-amber-50/60 border border-amber-200/80 rounded-lg p-2.5 text-xs leading-relaxed";
+        li.innerText = pt;
+        pointsUl.appendChild(li);
+      });
+    }
+
+    function toggleFullTimetable() {
+      const tt = document.getElementById('full-timetable');
+      const arrow = document.getElementById('timetable-arrow');
+      if (tt.classList.contains('hidden')) {
+        tt.classList.remove('hidden');
+        arrow.innerText = '▲';
+      } else {
+        tt.classList.add('hidden');
+        arrow.innerText = '▼';
+      }
+    }
+
+    function copyResult() {
+      const res = results[finalResultType];
+      const text = `【CAREER THEATER 参加度診断】\n私の結果は「${res.title.replace(/\n/g, '')}」でした！\n明日11/21(土)のイベント参加します🔥\nhttps://app.en-courage.com/events/01M2EMGQ5A2XQV89ABM6Q8PEP6`;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.innerText = "✅ コピーしました！LINEに貼ってね";
+        setTimeout(() => {
+          btn.innerText = "📋 結果をコピーしてメンターに報告";
+        }, 2500);
+      });
+    }
+
+    function resetQuiz() {
+      currentQuestion = 0;
+      scores = { ai_career: 0, challenge: 0, vision: 0, smart: 0 };
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('start-screen').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
